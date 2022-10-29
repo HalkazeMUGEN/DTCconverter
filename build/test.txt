@@ -1,0 +1,6 @@
+[State ]
+type = DisplayToClipboard
+trigger1 = 1
+text = "%*B%hn%*B%hn"
+params = 64, 4931584, 65, 4931585
+ignorehitpause = 1

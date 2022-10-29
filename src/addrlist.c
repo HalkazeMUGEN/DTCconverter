@@ -45,44 +45,44 @@ ADDR_MODIFIED_LIST* list_sort(ADDR_MODIFIED_LIST* list) {
 void list_print(ADDR_MODIFIED_LIST* list) {
   assert(list != NULL);
 
-  printf("===== MODIFIED ADDRESSES =====\n");
+  fprintf(output, "===== MODIFIED ADDRESSES =====\n");
   size_t n = (size_t)(list->n);
   size_t i = 0;
   while (i < n) {
     uint32_t last_addr = list_get_addr(list, i);
-    printf("\n0x%08X:\n", last_addr);
-    printf(" %02hhX", list_get_value(list, i));
+    fprintf(output, "\n0x%08X:\n", last_addr);
+    fprintf(output, " %02hhX", list_get_value(list, i));
     ++i;
     size_t x = 1;
     while (true) {
       uint32_t addr = list_get_addr(list, i);
       if (addr == last_addr + 1) {
-        printf(" %02hhX", list_get_value(list, i));
+        fprintf(output, " %02hhX", list_get_value(list, i));
         last_addr = addr;
       } else if (addr - last_addr > 0x00 && addr - last_addr <= 0x10) {
         do {
-          printf("   ");
+          fprintf(output, "   ");
           ++last_addr;
           ++x;
           if (x % 16 == 0) {
             x = 0;
-            printf("\n");
+            fprintf(output, "\n");
           }
         } while (addr != last_addr);
-        printf(" %02hhX", list_get_value(list, i));
+        fprintf(output, " %02hhX", list_get_value(list, i));
       } else {
-        printf("\n");
+        fprintf(output, "\n");
         break;
       }
       ++i;
       ++x;
       if (x % 16 == 0) {
         x = 0;
-        printf("\n");
+        fprintf(output, "\n");
       }
     }
   }
-  printf("\n==============================\n");
+  fprintf(output, "\n==============================\n");
 }
 
 void list_free(ADDR_MODIFIED_LIST* list) {

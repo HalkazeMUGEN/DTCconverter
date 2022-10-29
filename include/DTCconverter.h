@@ -3,6 +3,7 @@
 
 
 #include <assert.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -13,8 +14,13 @@
 #define LIMIT_CHARS           256
 
 #define ERRMSG_FAIL_OPEN_FILE "Can't open file."
+#define ERRMSG_NO_INPUT       "This program requires <file> argument.\nRun with \"-h\" option to see usage."
 #define ERRMSG_FAIL_ALLOC     "Can't get memory."
 #define ERRMSG_FAIL_REGCOMP   "Can't compile regex."
+
+
+extern FILE* input;
+extern FILE* output;
 
 
 static inline _Noreturn void show_error(const char* errmsg) __attribute__((nonnull (1)));
