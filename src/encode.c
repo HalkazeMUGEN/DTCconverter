@@ -174,18 +174,9 @@ static void read_display_to_clipboard(FILE* fp) {
       }
       printed += get_length_of_formatted_str(buf, params_use, consumed);
 
-      //fprintf(stderr, "split_text: %s\t", buf);
-      //fprintf(stderr, "len: %zu\t", get_length_of_formatted_str(buf, params_use, consumed));
-      //fprintf(stderr, "consume: %zd\n", consumed);
       fprintf(stderr, "[0x%08X] := 0x%02hhX\n", params[used], printed);
 
       list_append_values(list, params[used], printed);
-
-      /*
-      for (size_t i = 0; i < consumed; ++i) {
-        fprintf(stderr, "params_use[%zu]: %d\n", i, params_use[i]);
-      }
-      */
 
       ++used;
       fmt = &fmt[len];
