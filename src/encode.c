@@ -158,10 +158,11 @@ static void read_display_to_clipboard(FILE* fp) {
     char* fmt = text;
     char* prev = fmt;
     size_t len = 0;
-    uint8_t printed = 0;
+    uint32_t printed = 0;
     uint32_t params_use[MAX_PARAMS] = {0};
     size_t used = 0;
     while ((fmt = get_head_of_format(FT_N, fmt, &len)) != NULL) {
+      bool isHalf = has_half_format(fmt, len);
       strncpy_s(buf, LIMIT_CHARS, prev, fmt - prev);
       size_t consumed = get_number_of_formats(buf);
       for (size_t i = 0; i < consumed; ++i) {
@@ -174,9 +175,14 @@ static void read_display_to_clipboard(FILE* fp) {
       }
       printed += get_length_of_formatted_str(buf, params_use, consumed);
 
-      fprintf(stderr, "[0x%08X] := 0x%02hhX\n", params[used], printed);
+      fprintf(stderr, "[0x%08X] := 0x%02X\n", params[used], printed);
 
-      list_append_values(list, params[used], printed);
+      list_append_values(list, params[used], (printed&0xFF));
+      list_append_values_with_weak(list, params[used] + 0x1, (printed&0xFF00) >> 8, true);
+      if (!isHalf) {
+        list_append_values_with_weak(list, params[used] + 0x2, (printed&0xFF0000) >> 16, true);
+        list_append_values_with_weak(list, params[used] + 0x3, (printed&0xFF000000) >> 24, true);
+      }
 
       ++used;
       fmt = &fmt[len];

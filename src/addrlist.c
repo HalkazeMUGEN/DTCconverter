@@ -17,11 +17,24 @@ ADDR_MODIFIED_LIST* list_append_data(ADDR_MODIFIED_LIST* restrict list, const AD
   assert(list != NULL);
   assert(data != NULL);
 
-  return list_append_values(list, data->addr, data->value);
+  return list_append_values_with_weak(list, data->addr, data->value, data->weak);
 }
 
-ADDR_MODIFIED_LIST* list_append_values(ADDR_MODIFIED_LIST* restrict list, const uint32_t addr, const uint8_t value) {
+ADDR_MODIFIED_LIST* list_append_values(ADDR_MODIFIED_LIST* list, const uint32_t addr, const uint8_t value) {
   assert(list != NULL);
+
+  return list_append_values_with_weak(list, addr, value, false);
+}
+
+ADDR_MODIFIED_LIST* list_append_values_with_weak(ADDR_MODIFIED_LIST* list, const uint32_t addr, const uint8_t value, const bool weak) {
+  assert(list != NULL);
+
+  ADDR_MODIFIED_DATA* node = list_search_weak_addr(list, addr);
+  if (node != NULL) {
+    *(uint8_t*)(&(node->value)) = value;
+    *(bool*)(&(node->weak)) = weak;
+    return list;
+  }
 
   if ((list->n + 1) > (list->limit)) {
     list->limit *= 2;
@@ -30,9 +43,19 @@ ADDR_MODIFIED_LIST* list_append_values(ADDR_MODIFIED_LIST* restrict list, const 
 
   *(uint32_t*)(&(list->data[list->n].addr)) = addr;
   *(uint8_t*)(&(list->data[list->n].value)) = value;
+  *(bool*)(&(list->data[list->n].weak)) = weak;
   ++(list->n);
 
   return list;
+}
+
+ADDR_MODIFIED_DATA* list_search_weak_addr(ADDR_MODIFIED_LIST* list, const uint32_t addr) {
+  for (uint32_t i = list->n - 1; i != (uint32_t)(-1); --i) {
+    if ((list->data[i]).addr == addr && (list->data[i]).weak) {
+      return &(list->data[i]);
+    }
+  }
+  return NULL;
 }
 
 ADDR_MODIFIED_LIST* list_sort(ADDR_MODIFIED_LIST* list) {

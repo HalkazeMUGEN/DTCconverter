@@ -122,6 +122,13 @@ size_t get_length_of_formatted_str(const char* restrict format, const uint32_t* 
   return len;
 }
 
+bool has_half_format(const char* format, size_t size) {
+  for (size_t i = 1; i < size - 1; ++i) {
+    if (format[i] == 'h') return true;
+  }
+  return false;
+}
+
 
 static int get_number_of_format(const char* restrict format, size_t* restrict plen) {
   assert(format != NULL);

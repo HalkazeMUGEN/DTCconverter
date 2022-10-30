@@ -32,10 +32,9 @@ typedef enum _FORMAT_TYPES {
 
 
 char* get_head_of_format(FORMAT_TYPES target, const char* restrict text, size_t* restrict plen) __attribute__((nonnull (2)));
-
 int get_number_of_formats(const char* format) __attribute__((nonnull (1)));
-
 size_t get_length_of_formatted_str(const char* restrict format, const uint32_t* restrict args, size_t argc) __attribute__((nonnull (1, 2)));
+bool has_half_format(const char* format, size_t size) __attribute__((nonnull (1)));
 
 
 #endif  // _FORMAT_H_

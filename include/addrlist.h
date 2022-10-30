@@ -11,6 +11,7 @@
 typedef struct _ADDR_MODIFIED_DATA {
   const uint32_t addr;
   const uint8_t value;
+  const bool weak;
 } ADDR_MODIFIED_DATA, *PADDR_MODIFIED_DATA;
 
 typedef struct _ADDR_MODIFIED_LIST {
@@ -27,7 +28,9 @@ typedef struct _ADDR_MODIFIED_LIST {
 
 ADDR_MODIFIED_LIST* list_init(void);
 ADDR_MODIFIED_LIST* list_append_data(ADDR_MODIFIED_LIST* restrict list, const ADDR_MODIFIED_DATA* restrict data) __attribute__((nonnull (1, 2)));
-ADDR_MODIFIED_LIST* list_append_values(ADDR_MODIFIED_LIST* restrict list, const uint32_t addr, const uint8_t value) __attribute__((nonnull (1)));
+ADDR_MODIFIED_LIST* list_append_values(ADDR_MODIFIED_LIST* list, const uint32_t addr, const uint8_t value) __attribute__((nonnull (1)));
+ADDR_MODIFIED_LIST* list_append_values_with_weak(ADDR_MODIFIED_LIST* list, const uint32_t addr, const uint8_t value, const bool weak) __attribute__((nonnull (1)));
+ADDR_MODIFIED_DATA* list_search_weak_addr(ADDR_MODIFIED_LIST* list, const uint32_t addr) __attribute__((nonnull (1)));
 ADDR_MODIFIED_LIST* list_sort(ADDR_MODIFIED_LIST* list) __attribute__((nonnull (1)));
 void list_print(ADDR_MODIFIED_LIST* list) __attribute__((nonnull (1)));
 void list_free(ADDR_MODIFIED_LIST* list);
