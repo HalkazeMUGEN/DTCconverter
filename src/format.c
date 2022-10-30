@@ -1,4 +1,5 @@
 #include "format.h"
+#include "safemem.h"
 #include <string.h>
 #include <regex.h>
 
@@ -58,28 +59,64 @@ size_t get_length_of_formatted_str(const char* restrict format, const uint32_t* 
   assert(format != NULL);
   assert(args != NULL);
 
+  char* text = (char*)format;
+
   size_t len = 0;
+  char* b = get_head_of_format('B', format, &len);
+  if (b != NULL) {
+    size_t textLen = strlen(format) + 75;
+    text = (char*)safe_malloc(textLen);
+    strcpy(text, format);
+    char* buf = (char*)safe_malloc(textLen);
+    b = (b - format) + text;
+    do {
+      if (strncmp(b, "%B", 2) == 0) {
+        sprintf(buf, "%.*s%s", (size_t)(b - text), text, &text[(b - text) + len]);
+        strcpy(text, buf);
+      } else if (strncmp(b, "%*B", 3) == 0) {
+        text[(b-text)] = '\0';
+        int cnt = get_number_of_formats(text);
+        sprintf(buf, "%.*s%%%d.0s%s", (size_t)(b - text), text, args[cnt], &text[(b - text) + len]);
+        strcpy(text, buf);
+      } else if (strncmp(b, "%*.*B", 5) == 0) {
+        text[(b-text)] = '\0';
+        int cnt = get_number_of_formats(text);
+        sprintf(buf, "%.*s%%%d.0s%%0.0s%s", (size_t)(b - text), text, args[cnt], &text[(b - text) + len]);
+        strcpy(text, buf);
+      } else {
+        show_error("Can't expect the behavior of %B...");
+      }
+      b = get_head_of_format('B', text, &len);
+    } while (b);
+    free(buf);
+  }
+
+  len = 0;
   switch (argc) {
   case 0:
-    len = (size_t)snprintf(NULL, 0, format);
+    len = (size_t)snprintf(NULL, 0, text);
     break;
   case 1:
-    len = (size_t)snprintf(NULL, 0, format, args[0]);
+    len = (size_t)snprintf(NULL, 0, text, args[0]);
     break;
   case 2:
-    len = (size_t)snprintf(NULL, 0, format, args[0], args[1]);
+    len = (size_t)snprintf(NULL, 0, text, args[0], args[1]);
     break;
   case 3:
-    len = (size_t)snprintf(NULL, 0, format, args[0], args[1], args[2]);
+    len = (size_t)snprintf(NULL, 0, text, args[0], args[1], args[2]);
     break;
   case 4:
-    len = (size_t)snprintf(NULL, 0, format, args[0], args[1], args[2], args[3]);
+    len = (size_t)snprintf(NULL, 0, text, args[0], args[1], args[2], args[3]);
     break;
   case 5:
-    len = (size_t)snprintf(NULL, 0, format, args[0], args[1], args[2], args[3], args[4]);
+    len = (size_t)snprintf(NULL, 0, text, args[0], args[1], args[2], args[3], args[4]);
     break;
   default:
     show_error("Required over MAX_PARAMS!");
+  }
+
+  if (text != format) {
+    free(text);
   }
 
   return len;
