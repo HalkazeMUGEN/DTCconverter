@@ -84,7 +84,7 @@ void list_print(ADDR_MODIFIED_LIST* list) {
         last_addr = addr;
       } else if (addr - last_addr > 0x00 && addr - last_addr <= 0x10) {
         do {
-          fprintf(output, " XX");
+          fprintf(output, " " UNMODIFIED_DATA);
           ++last_addr;
           ++x;
           if (x % 16 == 0) {

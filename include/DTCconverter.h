@@ -12,6 +12,7 @@
 
 
 #define LIMIT_CHARS           256
+#define UNMODIFIED_DATA       "XX"
 
 #define ERRMSG_FAIL_OPEN_FILE "Can't open file."
 #define ERRMSG_NO_INPUT       "This program requires <file> argument.\nRun with \"-h\" option to see usage."

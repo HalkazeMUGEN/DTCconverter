@@ -3,11 +3,9 @@
 #include <string.h>
 #include <regex.h>
 
+
 #define FORMAT_REGEX_NO_TYPE  "%[-+0 #]*(\\*)?[0-9]*(\\.\\*|\\.|)[0-9]*[hlF]*" // Tuned for MUGEN
 #define FORMAT_REGEX          "%%|%[-+0 #]*(\\*)?[0-9]*(\\.\\*|\\.|)[0-9]*[hlF]*([BCEGSXZcdefginopsux]?)" // Tuned for MUGEN
-
-#define testmsg %% %c % 0 0 ###*.*1lllhn %d
-
 
 
 static int get_number_of_format(const char* restrict format, size_t* restrict plen) __attribute__((nonnull (1, 2)));
@@ -182,4 +180,6 @@ static int get_number_of_format(const char* restrict format, size_t* restrict pl
   return cnt;
 }
 
-#undef FORMAT_ALL_TYPES
+
+#undef FORMAT_REGEX_NO_TYPE
+#undef FORMAT_REGEX
