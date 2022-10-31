@@ -20,7 +20,7 @@ typedef struct _NULLABLE_BYTE_SEQ {
 
 
 // 次のラベル開始直前/ファイル終端までfpを進める
-NULLABLE_BYTE_SEQ* make_nullable_byte_seq(FILE* fp) __attribute__((nonnull (1)));
+NULLABLE_BYTE_SEQ* make_nullable_byte_seq(char* s) __attribute__((nonnull (1)));
 
 // sequenceがisTerminatedならexist=falseの値を返す
 NULLABLE_BYTE get_value_from_seq(NULLABLE_BYTE_SEQ* seq) __attribute__((nonnull (1)));
