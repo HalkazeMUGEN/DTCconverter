@@ -4,7 +4,7 @@
 #include "safemem.h"
 #include "strutil.h"
 #include <string.h>
-#include <regex.h.>
+#include <regex.h>
 
 
 #define ADDR_LABEL_REGEX "(0x)?[0-9a-fA-F]{1,8}:"
@@ -18,17 +18,18 @@ static char* make_bytes_str_from_read_values(FILE* fp) __attribute__((nonnull (1
 void decode(FILE* fp) {
   uint32_t addr;
   while ((addr = read_addr_label(fp)) != 0) {
-    fprintf(output, "addr: 0x%08X\n", addr);
+    fprintf(output, "; 0x%08X -\n", addr);
     NULLABLE_BYTE values[UNIT_OF_BYTES] = {0};
-    NULLABLE_BYTE_SEQ* seq = make_nullable_byte_seq(make_bytes_str_from_read_values(fp));
+    NULLABLE_BYTE_SEQ* seq = make_nullable_byte_seq(addr, make_bytes_str_from_read_values(fp));
     while (!(seq->isTerminated)) {
       // 読み込み + DTCコード生成 (DTCコードが完成すれば出力)
       generate_mugen_code(seq, values);
     }
-    // 未完成のDTCコードを出力
-    generate_mugen_code_from_buffer();
+    // 未出力のDTCコードを出力
+    generate_mugen_code_from_buffer(seq, values);
     free_nullable_byte_seq(seq);
     seq = NULL;
+    fprintf(output, "\n");
   }
 }
 

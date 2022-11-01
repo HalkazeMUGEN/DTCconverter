@@ -11,6 +11,9 @@
 #include <stdlib.h>
 
 
+
+
+#define MAX_PARAMS            5
 #define LIMIT_CHARS           256
 #define UNMODIFIED_DATA       "XX"
 

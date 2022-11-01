@@ -6,9 +6,6 @@
 #include <string.h>
 
 
-#define MAX_PARAMS  5
-
-
 static ADDR_MODIFIED_LIST* list;
 
 

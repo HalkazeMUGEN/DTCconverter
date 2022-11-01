@@ -3,11 +3,20 @@
 #include <string.h>
 
 
-NULLABLE_BYTE_SEQ* make_nullable_byte_seq(char* s) {
+NULLABLE_VALUE_TYPE get_value_type(NULLABLE_BYTE* b) {
+  assert(b != NULL);
+
+  return (b->exist)
+    ? ((b->value) ? NULLABLE_VALUE_TYPE_NOT_ZERO : NULLABLE_VALUE_TYPE_ZERO)
+    : NULLABLE_VALUE_TYPE_NOT_EXIST;
+}
+
+NULLABLE_BYTE_SEQ* make_nullable_byte_seq(uint32_t addr, char* restrict s) {
   assert(s != NULL);
 
   NULLABLE_BYTE_SEQ* seq = (NULLABLE_BYTE_SEQ*)safe_malloc(sizeof(NULLABLE_BYTE_SEQ));
   seq->isTerminated = false;
+  seq->addr = addr;
   seq->s = s;
   return seq;
 }
@@ -15,6 +24,7 @@ NULLABLE_BYTE_SEQ* make_nullable_byte_seq(char* s) {
 NULLABLE_BYTE get_value_from_seq(NULLABLE_BYTE_SEQ* seq) {
   assert(seq != NULL);
 
+  ++(seq->addr);
   NULLABLE_BYTE ret = { .exist = false };
 
   if (seq->isTerminated) {
