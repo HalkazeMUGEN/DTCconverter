@@ -1,4 +1,4 @@
-CC := gcc
+CC := x86_64-w64-mingw32-gcc.exe
 SRCDIR := ./src
 OUTDIR := ./build
 INCDIR := ./include
@@ -12,7 +12,7 @@ LIBS := -lregex
 LDFLAGS := -L$(LIBDIR) $(LIBS) -Wl,--nxcompat,--no-seh,-s,--disable-forceinteg,--subsystem,console
 WARNINGS := -Wall -Wextra
 OPTIMIZERS :=  -O2 -fomit-frame-pointer -ftree-vectorize
-TARGETS := -mavx -mavx2 -mmmx -msse -msse2 -msse2avx -msse3 -msse4 -msse4.1 -msse4.2 -mssse3 -mwin32 -mfpmath=sse
+TARGETS := -mavx -mavx2 -mmmx -msse -msse2 -msse2avx -msse3 -msse4 -msse4.1 -msse4.2 -mssse3 -mfpmath=sse
 CFLAGS := $(WARNINGS) $(TARGETS) $(OPTIMIZERS) -s -DNDEBUG
 CFLAGS_DEBUG := $(WARNINGS) $(TARGETS) -O0 -g -DDEBUG
 LDFLAGS_DEBUG := -L$(LIBDIR) $(LIBS) -Wl,--nxcompat,--no-seh,--disable-forceinteg,--disable-dynamicbase,--subsystem,console

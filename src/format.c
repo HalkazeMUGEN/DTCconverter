@@ -69,17 +69,17 @@ size_t get_length_of_formatted_str(const char* restrict format, const uint32_t* 
     b = (b - format) + text;
     do {
       if (strncmp(b, "%B", 2) == 0) {
-        sprintf(buf, "%.*s%s", (size_t)(b - text), text, &text[(b - text) + len]);
+        sprintf(buf, "%.*s%s", (int)(b - text), text, &text[(b - text) + len]);
         strcpy(text, buf);
       } else if (strncmp(b, "%*B", 3) == 0) {
         text[(b-text)] = '\0';
         int cnt = get_number_of_formats(text);
-        sprintf(buf, "%.*s%%%d.0s%s", (size_t)(b - text), text, args[cnt], &text[(b - text) + len]);
+        sprintf(buf, "%.*s%%%d.0s%s", (int)(b - text), text, args[cnt], &text[(b - text) + len]);
         strcpy(text, buf);
       } else if (strncmp(b, "%*.*B", 5) == 0) {
         text[(b-text)] = '\0';
         int cnt = get_number_of_formats(text);
-        sprintf(buf, "%.*s%%%d.0s%%0.0s%s", (size_t)(b - text), text, args[cnt], &text[(b - text) + len]);
+        sprintf(buf, "%.*s%%%d.0s%%0.0s%s", (int)(b - text), text, args[cnt], &text[(b - text) + len]);
         strcpy(text, buf);
       } else {
         show_error("Can't expect the behavior of %B...");
