@@ -57,7 +57,7 @@ static void parse_args(int argc, char** argv) {
       mode = MODE_ENCODE;
       break;
     case 'o':
-      output = fopen(optarg, "r");
+      output = fopen(optarg, "w");
       if (output == NULL) {
         show_error(ERRMSG_FAIL_OPEN_FILE);
       }
