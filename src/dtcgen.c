@@ -59,7 +59,7 @@ void generate_mugen_code(NULLABLE_BYTE_SEQ* restrict seq, NULLABLE_BYTE values[s
 
   char bufText[7];
   size_t bufParamsCnt;
-  uint32_t bufParams[2];
+  uint32_t bufParams[2] = {0};
   if (get_value_type(&values[0]) == NVT_00 && get_value_type(&values[1]) != NVT_AA && get_value_type(&values[2]) == NVT_00) {
     strcpy(bufText, "%n");
     bufParamsCnt = 1;
