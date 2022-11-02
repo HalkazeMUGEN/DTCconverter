@@ -41,9 +41,11 @@ static uint32_t read_addr_label(FILE* fp) {
     char* p = strchr(buf, '\n');
     if (p) *p = '\0';
     if (is_addr_label(buf)) {
-      if (sscanf(buf, "%X", &addr) != 1) {
+      int i;
+      if (sscanf(buf, "%i", &i) != 1) {
         show_error("Can't parse address label.");
       }
+      addr = (uint32_t)i;
       break;
     }
   }

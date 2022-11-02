@@ -45,13 +45,13 @@ NULLABLE_BYTE get_value_from_seq(NULLABLE_BYTE_SEQ* seq) {
     target_s = NULL;
     seq->isTerminated = true;
   } else {
-    uint8_t b;
+    int b;
     if (strncmp(c, UNMODIFIED_DATA, sizeof(UNMODIFIED_DATA)) != 0) {
-      if (sscanf_s(c, "%02hhX", &b) != 1) {
+      if (sscanf_s(c, "%hhx", &b) != 1) {
         show_error("Can't parse value.");
       }
       ret.exist = true;
-      ret.value = b;
+      ret.value = (uint8_t)(b & 0xFF);
     }
   }
   return ret;
