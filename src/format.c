@@ -22,13 +22,13 @@ char* get_head_of_format(FORMAT_TYPES target, const char* restrict text, size_t*
     }
   }
 
-  *plen = 0;
+  if (plen) *plen = 0;
   char* p = strchr(text, '%');
   regmatch_t match;
   while (p) {
     if (regexec(&regex, p, 1, &match, 0) != REG_NOMATCH) {
       if (p[match.rm_eo] == (char)(target)) {
-        *plen = match.rm_eo - match.rm_so + 1;
+        if (plen) *plen = match.rm_eo - match.rm_so + 1;
         return p + match.rm_so;
       }
       p += match.rm_eo - match.rm_so;
