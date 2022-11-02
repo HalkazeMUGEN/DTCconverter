@@ -132,7 +132,7 @@ static void read_display_to_clipboard(FILE* fp) {
         if (p) *p = '\0';
         line = rtrim(line, "\t ");
         while (!split_values(params, 6, line, ',')) {
-          fprintf(output, "Failed to parse...\nOriginal params: %s\nInput correct params: ", origin);
+          fprintf(stderr, "Failed to parse...\nOriginal params: %s\nInput correct params: ", origin);
           fgets(line, LIMIT_CHARS, stdin);
           p = strrchr(buf, '\n');
           if (p) *p = '\0';
