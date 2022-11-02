@@ -9,11 +9,11 @@ OBJS := $(patsubst $(SRCDIR)/%.c,$(OUTDIR)/%.o,$(SRCS))
 DEPENDS := $(patsubst $(SRCDIR)/%.c,$(OUTDIR)/%.d,$(SRCS))
 HEADERS := $(wildcard $(INCDIR)/*.h)
 LIBS := -lregex
-LDFLAGS := -L$(LIBDIR) $(LIBS) -Wl,--nxcompat,--no-seh,--disable-forceinteg,--subsystem,console
+LDFLAGS := -L$(LIBDIR) $(LIBS) -Wl,--nxcompat,--no-seh,-s,--disable-forceinteg,--subsystem,console
 WARNINGS := -Wall -Wextra
 OPTIMIZERS :=  -O2 -fomit-frame-pointer -ftree-vectorize
 TARGETS := -mavx -mavx2 -mmmx -msse -msse2 -msse2avx -msse3 -msse4 -msse4.1 -msse4.2 -mssse3 -mfpmath=sse
-CFLAGS := $(WARNINGS) $(TARGETS) $(OPTIMIZERS) -g -DNDEBUG
+CFLAGS := $(WARNINGS) $(TARGETS) $(OPTIMIZERS) -s -DNDEBUG
 CFLAGS_DEBUG := $(WARNINGS) $(TARGETS) -O0 -g -DDEBUG
 LDFLAGS_DEBUG := -L$(LIBDIR) $(LIBS) -Wl,--nxcompat,--no-seh,--disable-forceinteg,--disable-dynamicbase,--subsystem,console
 
