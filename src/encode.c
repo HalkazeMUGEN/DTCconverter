@@ -132,6 +132,9 @@ static void read_display_to_clipboard(FILE* fp) {
         if (p) *p = '\0';
         line = rtrim(line, "\t ");
         while (!split_values(params, 6, line, ',')) {
+          if (find_text && get_head_of_format(FT_N, buf, NULL) == NULL) {
+            break;
+          }
           fprintf(stderr, "Failed to parse...\nOriginal params: %s\nInput correct params: ", origin);
           fgets(line, LIMIT_CHARS, stdin);
           p = strrchr(buf, '\n');
