@@ -93,6 +93,7 @@ static void read_display_to_clipboard(FILE* fp) {
   bool find_params = false;
 
   char text[LIMIT_CHARS];
+  char paramsText[LIMIT_CHARS];
   uint32_t params[MAX_PARAMS] = {0};
 
   long offset = ftell(fp);
@@ -125,28 +126,37 @@ static void read_display_to_clipboard(FILE* fp) {
       char* line = ltrim(&buf[6], "\t ");
       if (line[0] == '=') {
         line = ltrim(&line[1], "\t ");
-        char* origin = (char*)safe_malloc(strlen(buf) + 1);
-        strcpy(origin, line);
+        strcpy(paramsText, line);
         find_params = true;
-        char* p = strchr(line, ';');
-        if (p) *p = '\0';
-        line = rtrim(line, "\t ");
-        while (!split_values(params, 6, line, ',')) {
-          if (find_text && get_head_of_format(FT_N, buf, NULL) == NULL) {
-            break;
-          }
-          fprintf(stderr, "Failed to parse...\nOriginal params: %s\nInput correct params: ", origin);
-          fgets(line, LIMIT_CHARS, stdin);
-          p = strrchr(buf, '\n');
-          if (p) *p = '\0';
-        }
-        free(origin);
-        origin = NULL;
       }
     }
   }
 
+  bool print = false;
+
   if (find_text && find_params) {
+    print = true;
+    char* origin = safe_malloc(strlen(paramsText) + 1);
+    strcpy(origin, paramsText);
+    char* p = strchr(paramsText, ';');
+    if (p) *p = '\0';
+    rtrim(paramsText, "\t ");
+    while (!split_values(params, 6, paramsText, ',')) {
+      if (find_text && get_head_of_format(FT_N, text, NULL) == NULL) {
+        print = false;
+        break;
+      }
+      fprintf(stderr, "Failed to parse...\nOriginal params: %s\nInput correct params: ", origin);
+      fgets(paramsText, LIMIT_CHARS, stdin);
+      p = strrchr(paramsText, '\n');
+      if (p) *p = '\0';
+    }
+    free(origin);
+    origin = NULL;
+  }
+
+
+  if (print) {
     fprintf(stderr, "text: %s\n", text);
     fprintf(stderr, "params: ");
     for (size_t i = 0; i < MAX_PARAMS; ++i) {
