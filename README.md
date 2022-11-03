@@ -1,5 +1,5 @@
 # DTCconverter
-Make it easy to see the impact of %n in DTC/ATC on MUGEN.
+Make it easy to convert DTC <-> HEX code.
 
 ## License
 `GPLv3.0` or `any lator version`
