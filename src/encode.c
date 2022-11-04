@@ -73,6 +73,7 @@ static bool is_display_to_clipboard(char* line) {
   assert(line != NULL);
 
   line = ltrim(line, "\t ");
+  tolowers(line, 4);
   if (strncmp(line, "type", 4) == 0) {
     line = ltrim(&line[4], "\t ");
     if (line[0] == '=') {
@@ -109,6 +110,7 @@ static void read_display_to_clipboard(FILE* fp) {
     offset = ftell(fp);
 
     ltrim(buf, "\t ");
+    tolowers(buf, 6);
     if (!find_text && strncmp(buf, "text", 4) == 0) {
       char* line = ltrim(&buf[4], "\t ");
       if (line[0] == '=') {
