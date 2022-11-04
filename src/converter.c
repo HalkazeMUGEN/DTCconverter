@@ -102,7 +102,7 @@ static _Noreturn void print_usage(const char* name) {
 }
 
 static _Noreturn void print_version(void) {
-  puts("DTCconverter 1.0.0");
+  printf("DTCconverter %d.%d.%d\n", MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION);
   puts("Copyright (C) 2022 Halkaze");
   exit(0);
 }
